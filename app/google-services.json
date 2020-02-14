@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1064015713098",
+    "firebase_url": "https://litelo.firebaseio.com",
+    "project_id": "litelo",
+    "storage_bucket": "litelo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1064015713098:android:9f7dda25bed2830e1667b3",
+        "android_client_info": {
+          "package_name": "com.ir_sj.litelo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1064015713098-cqccgaug4d63o08jtr9ana32117m0pdd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAac3Xzik-DKpZ21xwpXViF19Ca1AbhhX8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1064015713098-cqccgaug4d63o08jtr9ana32117m0pdd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

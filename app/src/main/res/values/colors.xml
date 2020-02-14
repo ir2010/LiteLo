@@ -3,4 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="eyecatching">#D5C122</color>
+    <color name="forceful_orange">#F29900</color>
+    <color name="harvester">#EDC48E</color>
+    <color name="offbeat_green">#919301</color>
 </resources>

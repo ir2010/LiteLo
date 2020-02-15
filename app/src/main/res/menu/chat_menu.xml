@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.ir_sj.litelo.ChatActivity2">
+
+    <item
+        android:id="@+id/menu_info"
+        android:icon="@android:drawable/ic_search_category_default"
+        android:title="Circle Info"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_leave"
+        android:title="Leave Chat"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_change_bg"
+        android:title="Change Background"
+        app:showAsAction="never"/>
+
+</menu>

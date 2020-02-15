@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".FirstPage"></activity>
+        <activity android:name=".InfoActivity"></activity>
+        <activity android:name=".ChatActivity2" />
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".FirstPage" />
         <activity android:name=".Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

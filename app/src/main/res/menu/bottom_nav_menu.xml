@@ -1,0 +1,38 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.ir_sj.litelo.MainActivity">
+
+    <item
+        android:id="@+id/profile"
+        android:orderInCategory="100"
+        android:title="Profile"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/ic_person_black_24dp"/>
+
+    <item
+        android:id="@+id/jam"
+        android:orderInCategory="100"
+        android:title="JAM"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/ic_edit_black_24dp"/>
+
+    <item
+        android:id="@+id/talk"
+        android:orderInCategory="100"
+        android:title="Talk"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/ic_chat_black_24dp"/>
+
+    <item
+        android:id="@+id/notifications"
+        android:orderInCategory="100"
+        android:title="Notifications"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/ic_notifications_black_24dp" />
+
+</menu>

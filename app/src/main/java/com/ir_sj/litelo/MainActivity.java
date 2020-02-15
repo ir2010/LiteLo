@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
         userName = (TextView)findViewById(R.id.userName);
         imgview = (CircularImageView)findViewById(R.id.image);
 
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
         //user = FirebaseAuth.getInstance().getCurrentUser();

@@ -7,44 +7,41 @@
     tools:context=".ChatActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/all_user_post_list"
+        android:id="@+id/all_user_chat_list"
         android:layout_width="396dp"
         android:layout_height="574dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="84dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.github.clans.fab.FloatingActionButton
+    <ImageButton
+        android:layout_width="98dp"
+        android:layout_height="55dp"
         android:id="@+id/fab"
-        android:layout_width="107dp"
-        android:layout_height="145dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom|right"
-        android:layout_margin="16dp"
-        android:layout_marginEnd="160dp"
-        android:layout_marginBottom="16dp"
+        android:background="@drawable/custom_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.539"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu_showShadow="true"
-        app:menu_colorNormal="@color/forceful_orange"
-        app:menu_colorPressed="@color/harvester"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976"
+        tools:src="@drawable/ic_add_black_24dp" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_width="405dp"
+        android:layout_height="49dp"
         android:text="Active Conversations"
+        android:textSize="40dp"
         android:textStyle="bold"
+        android:paddingLeft="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.042" />
+        app:layout_constraintVertical_bias="0.023" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

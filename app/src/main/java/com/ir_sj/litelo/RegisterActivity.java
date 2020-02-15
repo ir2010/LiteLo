@@ -55,10 +55,11 @@ public class RegisterActivity extends AppCompatActivity
     Uri img;
     int RESULT_LOAD_IMAGE=1;
     //FirebaseUser user;
-    DatabaseReference ref;
+    DatabaseReference ref, ref1;
     StorageReference sref;
     String downloadUri;
     LottieAnimationView anim;
+    static String mood="happy";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -75,6 +76,8 @@ public class RegisterActivity extends AppCompatActivity
         //anim.playAnimation();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        //mood = getIntent().getStringExtra("mood");
 
         name = (EditText)findViewById(R.id.name);
         chooseImage = (Button)findViewById(R.id.choose_image);
@@ -116,8 +119,18 @@ public class RegisterActivity extends AppCompatActivity
                     hashMap.put("name", dname);
                     hashMap.put("image", downloadUri);
                     hashMap.put("priority", "0");
+                    hashMap.put("mood", mood);
 
-                    ref.child(uid).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    if(mood.equals("happy"))
+                    {
+                        ref1 = ref.child("happy");
+                    }
+                    else
+                    {
+                        ref1 = ref.child("sad");
+                    }
+
+                    ref1.child(uid).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                         /*Slide slide = new Slide();

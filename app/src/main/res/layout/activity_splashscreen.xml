@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="580dp"
-        android:text="Chat+"
+        android:text="Lite Lo"
         android:textAlignment="center"
         android:textColor="@color/harvester"
         android:fontFamily="monospace"

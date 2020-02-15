@@ -59,11 +59,12 @@ public class ChatActivity2 extends AppCompatActivity {
         groupName = getIntent().getStringExtra("group_name");
         userName = getIntent().getStringExtra("user_name");
 
-        sref = FirebaseStorage.getInstance().getReference("group_images").child(groupKey);
+        sref = FirebaseStorage.getInstance().getReference("group_images");
         imgView = findViewById(R.id.imgView);
         TextView nameView = (TextView)findViewById(R.id.group_name);
         TextView userNameView = (TextView)findViewById(R.id.username);
         nameView.setText(groupName);
+        userNameView.setText(userName);
     }
 
 
@@ -104,8 +105,6 @@ public class ChatActivity2 extends AppCompatActivity {
         if(requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data && data.getData() != null)
         {
             filePath = data.getData();
-
-
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imgView.setImageBitmap(bitmap);
@@ -150,7 +149,7 @@ public class ChatActivity2 extends AppCompatActivity {
             });
 
 
-            sref.child("bg_image").putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            sref.child(groupKey).child("bg_image").putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
                 {
@@ -181,7 +180,7 @@ public class ChatActivity2 extends AppCompatActivity {
 
     private void setImage()
     {
-        sref.child("bg_image").getDownloadUrl()
+        sref.child(groupKey).child("bg_image").getDownloadUrl()
                 .addOnSuccessListener(new OnSuccessListener<Uri>()
                 {
                     @Override

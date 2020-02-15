@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,10 +18,12 @@ import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
@@ -31,7 +34,7 @@ import java.util.HashMap;
 
 public class ChatActivity extends AppCompatActivity {
     FloatingActionButton fab;
-    DatabaseReference ref;
+    DatabaseReference ref,usersRef;
     private String saveCurrentDate, saveCurrentTime;
 
     @Override
@@ -39,6 +42,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         ref = FirebaseDatabase.getInstance().getReference("Groups");
+        usersRef = FirebaseDatabase.getInstance().getReference("UserData");
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -49,7 +53,7 @@ public class ChatActivity extends AppCompatActivity {
                 alertDialog.setTitle("Start a conversation..");
                 //alertDialog.setMessage("Enter New Circle Name");
 
-                final EditText input = new EditText(ChatActivity.this);
+                /*final EditText input = new EditText(ChatActivity.this);
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.MATCH_PARENT);
@@ -63,7 +67,22 @@ public class ChatActivity extends AppCompatActivity {
                         LinearLayout.LayoutParams.MATCH_PARENT);
                 input.setLayoutParams(lp2);
                 input.setHint("Enter your Display Name for this conversation");
-                alertDialog.setView(input2);
+                alertDialog.setView(input2);*/
+                Context context = view.getContext();
+                LinearLayout layout = new LinearLayout(context);
+                layout.setOrientation(LinearLayout.VERTICAL);
+
+// Add a TextView here for the "Title" label, as noted in the comments
+                final EditText input = new EditText(context);
+                input.setHint("Enter New Circle Name");
+                layout.addView(input); // Notice this is an add method
+
+// Add another TextView here for the "Description" label
+                final EditText input2 = new EditText(context);
+                input2.setHint("Enter your display name for the conversation");
+                layout.addView(input2); // Another add method
+
+                alertDialog.setView(layout); // Again this is a set method, not add
                 alertDialog.setIcon(R.drawable.ic_chat_black_24dp);
 
                 alertDialog.setPositiveButton("Proceed",
@@ -86,28 +105,14 @@ public class ChatActivity extends AppCompatActivity {
 
                                 HashMap groupsMap = new HashMap();
                                 groupsMap.put("chatTitle", input.getText().toString());
-                                groupsMap.put("chatCreator", FirebaseAuth.getInstance().getCurrentUser());
+                                groupsMap.put("chatCreator", FirebaseAuth.getInstance().getCurrentUser().getUid());
                                 groupsMap.put("chatDate", saveCurrentDate);
                                 groupsMap.put("chatTime", saveCurrentTime);
                                 groupsMap.put("chatStatus", "1");
                                 groupsMap.put("userName", input2.getText().toString());
-
-                                FirebaseDatabase.getInstance().getReference().child("UserData")
-                                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                                    GroupMember groupMember = snapshot.getValue(GroupMember.class);
-                                                    //if()
-                                                }
-                                            }
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-                                            }
-                                        });
                                 groupsMap.put("users","");
                                 groupsMap.put("chats","");
-
+                                
                                 ref.child(key).setValue(groupsMap)
                                         .addOnCompleteListener(new OnCompleteListener() {
                                             @Override
@@ -115,6 +120,42 @@ public class ChatActivity extends AppCompatActivity {
                                             {
                                                 if(task.isSuccessful())
                                                 {
+                                                    Query usersQuery = usersRef.orderByChild("priority").limitToFirst(2);
+
+                                                    usersQuery.addValueEventListener(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                                          int i = 0;
+                                                            for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                                                                FirebaseDatabase.getInstance().getReference("UserData").child(postSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                                        ref.child(key).child("users").push().setValue(dataSnapshot.child("uid").getValue());
+                                                                        String prio = dataSnapshot.child("priority").getValue().toString();
+                                                                        int i = Integer.parseInt(prio);
+                                                                        HashMap groupsMap = new HashMap();
+                                                                        groupsMap.put("chatDate", saveCurrentDate);
+
+
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                                    }
+                                                                });
+                                                                i++;
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(DatabaseError databaseError) {
+                                                            // Getting Post failed, log a message
+                                                            //Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                                                            Toast.makeText(ChatActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                                                            // ...
+                                                        }
+                                                    });
                                                     Toast.makeText(ChatActivity.this,"New circle is updated sucessfully!",Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent(ChatActivity.this, ChatActivity2.class);
                                                     intent.putExtra("group_name", input.getText());

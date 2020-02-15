@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1064015713098-9msmol30tdk3djtaf77c485kkegfpkjt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ir_sj.litelo",
+            "certificate_hash": "c85605ce630691aa4f679c7860d858b531824eaa"
+          }
+        },
+        {
           "client_id": "1064015713098-cqccgaug4d63o08jtr9ana32117m0pdd.apps.googleusercontent.com",
           "client_type": 3
         }

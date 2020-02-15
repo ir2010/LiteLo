@@ -46,7 +46,7 @@ public class ChatActivity2 extends AppCompatActivity {
     Uri filePath;
     StorageReference sref;
     DatabaseReference ref;
-    String groupKey, groupName;
+    String groupKey, groupName, userName;
     ImageView imgView;
 
 
@@ -57,10 +57,12 @@ public class ChatActivity2 extends AppCompatActivity {
 
         groupKey = getIntent().getStringExtra("group_key");
         groupName = getIntent().getStringExtra("group_name");
+        userName = getIntent().getStringExtra("user_name");
 
         sref = FirebaseStorage.getInstance().getReference("group_images").child(groupKey);
         imgView = findViewById(R.id.imgView);
         TextView nameView = (TextView)findViewById(R.id.group_name);
+        TextView userNameView = (TextView)findViewById(R.id.username);
         nameView.setText(groupName);
     }
 

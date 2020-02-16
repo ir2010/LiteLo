@@ -21,21 +21,21 @@ import com.google.firebase.storage.UploadTask;
 public class SurveyListView extends AppCompatActivity {
 
     ListView listView;
-    String[] names={"What songs would you prefer to listen to now?","More preferable vacation activity","Would you rather plan nightouts with your chums or stayback home","What about your the next day look?",
-            "Lets say....Goa trip tomorrow?","What fits better?","Fault in our stars or Endgame?","According to your present situation","If you can pass a messgae to ypur younger self what would it be? ","" +
+    String[] names = {"What songs would you prefer to listen to now?", "More preferable vacation activity", "Would you rather plan nightouts with your chums or stayback home", "What about your the next day look?",
+            "Lets say....Goa trip tomorrow?", "What fits better?", "Fault in our stars or Endgame?", "According to your present situation", "If you can pass a messgae to ypur younger self what would it be? ", "" +
             "Is there anything standing between you and your happiness?"};
     // Integer[] images={R.drawable.billi,R.drawable.billi};
     //String[] lead={"Lead Developer"," "};
-    String[] opt1={"Pop/Rock","Hiking","Nightouts","Anything but look awesome","Definitelyy","Zindagi Gulzar hai","Endgame","Ofcourse it does","Embrace every moment","Nothin..happy enough"};
+    String[] opt1 = {"Pop/Rock", "Hiking", "Nightouts", "Anything but look awesome", "Definitelyy", "Zindagi Gulzar hai", "Endgame", "Ofcourse it does", "Embrace every moment", "Nothin..happy enough"};
     //String s="";
-    String[] opt2={"Slow/Soothing","Meadow","Better stay home","Naah..not in the mood","Zinda hu yaar kaafi hai","Fault in our stars","Not anymore","Duniya badi zalim hai","Every damn thing"
+    String[] opt2 = {"Slow/Soothing", "Meadow", "Better stay home", "Naah..not in the mood", "Zinda hu yaar kaafi hai", "Fault in our stars", "Not anymore", "Duniya badi zalim hai", "Every damn thing"
     };
-    int[] ans = {1,2};
-    static int count=0;
-    static String i="sad";
+    int[] ans = {1, 2};
+    static int count = 0;
+    static String i = "sad";
     RadioButton rb1, rb2;
     //RadioGroup rbg;
-    Button but,butt;
+    Button but, butt;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,17 +44,38 @@ public class SurveyListView extends AppCompatActivity {
         this.setTitle("Mood");
         listView = findViewById(R.id.survey_list);
 
-        MyAdapter adap=new MyAdapter(this,names,opt1,opt2);
+        MyAdapter adap = new MyAdapter(this, names, opt1, opt2);
         listView.setAdapter(adap);
 
-        rb1 = (RadioButton)findViewById(R.id.radioButton);
-        rb2 = (RadioButton)findViewById(R.id.radioButton1);
-
-        but=(Button)findViewById(R.id.bp);
-        but.setOnClickListener(new View.OnClickListener() {
+        Button bp = (Button)findViewById(R.id.bp);
+        bp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(rb1.isChecked())
+                if(count>5)
+                {
+                    i="happy";
+                    // SendToFirebase();
+                    startActivity(new Intent(SurveyListView.this, RegisterActivity.class));
+
+                }
+                else
+                {
+                    i="sad";
+                    // SendToFirebase();
+                    startActivity(new Intent(SurveyListView.this, RegisterActivity.class));
+                }
+            }
+        });
+    }
+}
+
+       // rb1 = (RadioButton)findViewById(R.id.radioButton);
+        //rb2 = (RadioButton)findViewById(R.id.radioButton1);
+
+        /*but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(anss.isChecked())
                     count++;
             }
         });
@@ -77,8 +98,7 @@ public class SurveyListView extends AppCompatActivity {
                 }
             }
 
-        } );
-    }
+        } );*/
 
     /* private void SendToFirebase()
     {
@@ -106,6 +126,6 @@ public class SurveyListView extends AppCompatActivity {
         });
     } */
 
-}
+
 
 

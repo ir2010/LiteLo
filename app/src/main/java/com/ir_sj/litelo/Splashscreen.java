@@ -36,9 +36,9 @@ public class Splashscreen extends AppCompatActivity {
             @Override
             public void run() {
                 if(FirebaseAuth.getInstance().getCurrentUser() ==  null)
-                    startActivity(new Intent(Splashscreen.this, FirstPage.class));
+                    startActivity(new Intent(Splashscreen.this, CreatePasswordActivity.class));
                 else
-                    startActivity(new Intent(Splashscreen.this, MainActivity.class));
+                    startActivity(new Intent(Splashscreen.this, EnterPassword.class));
                 finish();
             }
         },4000);

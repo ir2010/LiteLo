@@ -45,8 +45,7 @@ public class EnterPassword extends AppCompatActivity {
                     if(text2.equals(password))
                     {
 
-                        Intent intent=new Intent(getApplicationContext(),MainActivity.class);
-                        startActivity(intent);
+                        startActivity(new Intent(EnterPassword.this, MainActivity.class));
                         finish();
                     }
                     else

@@ -3,7 +3,9 @@ package com.ir_sj.litelo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.appcompat.widget.Toolbar;
+
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -50,10 +52,13 @@ public class PostActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setContentView(R.layout.postactivity);
+
         setContentView(R.layout.activity_postactivity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar5);
         setSupportActionBar(toolbar);
+
 
         mAuth= FirebaseAuth.getInstance();
         current_user_id=mAuth.getCurrentUser().getUid();
@@ -87,6 +92,16 @@ public class PostActivity extends AppCompatActivity {
     private void Validatepostinfo()
     {
         Description=Postdescription.getText().toString();
+
+        if(ImageUri==null)
+        {
+            Toast.makeText(this,"Please select image",Toast.LENGTH_SHORT).show();
+        }
+        else if(TextUtils.isEmpty(Description))
+        {
+            Toast.makeText(this,"Kindly insert a caption",Toast.LENGTH_SHORT).show();
+        }
+
         if(ImageUri==null && TextUtils.isEmpty(Description))
         {
             Toast.makeText(this,"Both fields empty",Toast.LENGTH_SHORT).show();
@@ -95,6 +110,7 @@ public class PostActivity extends AppCompatActivity {
         {
             Toast.makeText(this,"Kindly insert a caption",Toast.LENGTH_SHORT).show();
         }*/
+
         else
         {
             loadingBar.setTitle("Adding new post..");
@@ -161,7 +177,12 @@ public class PostActivity extends AppCompatActivity {
                     postsMap.put("description", Description);
                     postsMap.put("postimage", downloadurl);
                     postsMap.put("dp", UserProfileImage);
+
+                    postsMap.put("name", UserFullName);
+                    postsMap.put("Likes","");
+
                     postsMap.put("username", UserFullName);
+
                     PostsRef.child(current_user_id+postRandomName).setValue(postsMap)
                             .addOnCompleteListener(new OnCompleteListener() {
                                 @Override

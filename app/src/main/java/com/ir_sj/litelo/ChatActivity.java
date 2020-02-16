@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -34,6 +37,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,7 +49,7 @@ import java.util.Random;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
-    ImageButton fab;
+    Button fab;
     DatabaseReference ref, usersRef, groupsRef, userGroupRef, currentUserRef;
     private String saveCurrentDate, saveCurrentTime, mood, currentUserUid;
     RecyclerView chatList;
@@ -83,9 +87,9 @@ public class ChatActivity extends AppCompatActivity {
             }
         });*/
 
-        displayChatViews();
+          displayChatViews();
 
-        fab = (ImageButton) findViewById(R.id.fab);
+        fab = (Button) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,7 +147,7 @@ public class ChatActivity extends AppCompatActivity {
                                 // FirebaseAuth.getInstance().getCurrentUser()
                                 //.getUid(), saveCurrentDate, saveCurrentTime));    //groups created
 
-                                HashMap groupsMap = new HashMap();
+                                final HashMap groupsMap = new HashMap();
                                 groupsMap.put("chatTitle", input.getText().toString());
                                 groupsMap.put("chatCreator", FirebaseAuth.getInstance().getCurrentUser().getUid());
                                 groupsMap.put("chatDate", saveCurrentDate);
@@ -152,6 +156,7 @@ public class ChatActivity extends AppCompatActivity {
                                 groupsMap.put("userName", input2.getText().toString());
                                 groupsMap.put("users", "");
                                 groupsMap.put("chats", "");
+                                groupsMap.put("bg_image_url", "");
 
                                 groupsRef.child(key).setValue(groupsMap)
                                         .addOnCompleteListener(new OnCompleteListener() {
@@ -159,34 +164,34 @@ public class ChatActivity extends AppCompatActivity {
                                             public void onComplete(@NonNull Task task) {
                                                 if (task.isSuccessful()) {
                                                     currentUserRef.child(currentUserUid).child("groups").setValue(key);
-                                                    Query usersQuery = usersRef.orderByChild("priority").limitToFirst(2);
+                                                    currentUserRef.child(currentUserUid).child("groups").child("username").setValue(input.getText().toString());
 
-                                                    usersQuery.addValueEventListener(new ValueEventListener() {
+
+                                                    final Query usersQuery = usersRef.orderByChild("priority").limitToFirst(2);
+                                                    //Toast.makeText(ChatActivity.this, usersQuery.toString(), Toast.LENGTH_SHORT).show();
+
+                                                    usersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        int i = 1;
                                                         @Override
-                                                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                                                                FirebaseDatabase.getInstance().getReference("UserData").child("happy").child(postSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
-                                                                    @Override
-                                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                                        groupsRef.child(key).child("users").push().setValue(dataSnapshot.child("uid").getValue());
-                                                                        String prio = dataSnapshot.child("priority").getValue().toString();
-                                                                        int i = Integer.parseInt(prio);
-                                                                        usersRef.child(dataSnapshot.child("uid").getValue().toString()).child("priority").setValue(i + 1);
-                                                                        usersRef.child(dataSnapshot.child("uid").getValue().toString()).child("groups").setValue(key);
-                                                                    }
-
-                                                                    @Override
-                                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                                    }
-                                                                });
+                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            //Toast.makeText(ChatActivity.this, dataSnapshot.getChildrenCount()+"", Toast.LENGTH_SHORT).show();
+                                                            for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                                                                String uid = snap.getKey();
+                                                                int prio = Integer.parseInt(snap.child("priority").getValue().toString());
+                                                                usersRef.child(uid).child("groups").setValue(key);
+                                                                usersRef.child(uid).child("priority").setValue(prio+1);
+                                                                String fkey = "friend"+i+"";
+                                                                usersRef.child(uid).child("groups").child("username").setValue(fkey);
+                                                                groupsRef.child(key).child("users").child(fkey).setValue(uid);
+                                                                //Toast.makeText(ChatActivity.this, uid, Toast.LENGTH_LONG).show();
+                                                                i++;
                                                             }
                                                         }
 
                                                         @Override
-                                                        public void onCancelled(DatabaseError databaseError) {
-                                                            Toast.makeText(ChatActivity.this, "failed", Toast.LENGTH_SHORT).show();
+                                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
                                                         }
                                                     });
                                                     Toast.makeText(ChatActivity.this, "New circle is updated sucessfully!", Toast.LENGTH_SHORT).show();
@@ -219,40 +224,47 @@ public class ChatActivity extends AppCompatActivity {
 
     public void displayChatViews() {
         FirebaseRecyclerOptions<Chat> options = new FirebaseRecyclerOptions.Builder<Chat>().setQuery(userGroupRef, Chat.class).build();
-        FirebaseRecyclerAdapter<Chat, ChatActivity.ChatsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Chat, ChatActivity.ChatsViewHolder>
+        FirebaseRecyclerAdapter<Chat, ChatActivity.ChatViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Chat, ChatActivity.ChatViewHolder>
                 (options) {
             @Override
-            protected void onBindViewHolder(@NonNull final ChatActivity.ChatsViewHolder chatsViewHolder, int i, @NonNull final Chat chat) {
-                chatsViewHolder.userName.setText(chat.getUserName());
-                chatsViewHolder.chatTime.setText(chat.getChatTime());
-                chatsViewHolder.chatDate.setText(chat.getChatDate());
-                chatsViewHolder.chatTitle.setText(chat.getChatTitle());
+            protected void onBindViewHolder(@NonNull final ChatActivity.ChatViewHolder chatViewHolder, int i, @NonNull final Chat chat) {
+                chatViewHolder.userName.setText(chat.getUserName());
+                chatViewHolder.chatTime.setText(chat.getChatTime());
+                chatViewHolder.chatDate.setText(chat.getChatDate());
+                chatViewHolder.chatTitle.setText(chat.getChatTitle());
             }
 
             @NonNull
             @Override
-            public ChatActivity.ChatsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public ChatActivity.ChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.all_chatview_layout, parent, false);
 
-                return new ChatActivity.ChatsViewHolder(view);
+                return new ChatViewHolder(view);
             }
         };
         chatList.setAdapter(firebaseRecyclerAdapter);
         firebaseRecyclerAdapter.startListening();
     }
 
-        public static class ChatsViewHolder extends RecyclerView.ViewHolder {
-            TextView chatTitle, userName, chatTime, chatDate;
-            int chatStatus;
 
-            public ChatsViewHolder(@NonNull View view) {
-                super(view);
-                chatTitle = view.findViewById(R.id.groupname);
-                userName = view.findViewById(R.id.user_name);
-                chatTime = view.findViewById(R.id.time);
-                chatDate = view.findViewById(R.id.date);
-            }
+    public static class ChatViewHolder extends RecyclerView.ViewHolder
+    {
+        private TextView chatTitle;
+        //private String chatCreator;
+        private TextView chatDate;
+        private TextView chatTime;
+        //private int chatStatus;
+        private TextView userName;
+
+        public ChatViewHolder(@NonNull View view)
+        {
+            super(view);
+            chatTitle = view.findViewById(R.id.groupname);
+            chatDate = view.findViewById(R.id.user_name);
+            chatTime = view.findViewById(R.id.time);
+            userName = view.findViewById(R.id.date);
         }
+    }
     }
 
 

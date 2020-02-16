@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity
     StorageReference sref;
     String downloadUri;
     LottieAnimationView anim;
-    static String mood="happy";
+    static String mood="sad";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

@@ -3,6 +3,8 @@ package com.ir_sj.litelo;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -16,17 +18,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.L;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseListOptions;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,31 +49,75 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class ChatActivity2 extends AppCompatActivity {
     int RESULT_LOAD_IMAGE = 1;
     Uri filePath;
     StorageReference sref;
-    DatabaseReference ref;
-    String groupKey, groupName, userName;
+    DatabaseReference ref, chatRef, groupRef;
+    static String groupKey, groupName, userName;
     ImageView imgView;
-
+    String uid;
+    private FirebaseListAdapter<ChatMessage> adapter;
+    ImageButton btn;
+    String name, saveCurrentDate, saveCurrentTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat2);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar4);
+        setSupportActionBar(toolbar);
+
         groupKey = getIntent().getStringExtra("group_key");
         groupName = getIntent().getStringExtra("group_name");
         userName = getIntent().getStringExtra("user_name");
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ref = FirebaseDatabase.getInstance().getReference("UserData");
+        groupRef = FirebaseDatabase.getInstance().getReference("Groups/"+groupKey);
+        btn = (ImageButton)findViewById(R.id.send_button);
 
         sref = FirebaseStorage.getInstance().getReference("group_images");
+        chatRef = FirebaseDatabase.getInstance().getReference().child("Groups").child(groupKey).child("chats");
         imgView = findViewById(R.id.imgView);
         TextView nameView = (TextView)findViewById(R.id.group_name);
         TextView userNameView = (TextView)findViewById(R.id.username);
         nameView.setText(groupName);
-        userNameView.setText(userName);
+        userNameView.setText("started by "+userName);
+
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText msg = (EditText)findViewById(R.id.input);
+                Toast.makeText(ChatActivity2.this, "Sent!", Toast.LENGTH_SHORT).show();
+                ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        name=  dataSnapshot.child(uid).child("groups").child("username").getValue().toString();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                Calendar calFordDate = Calendar.getInstance();
+                SimpleDateFormat currentDate = new SimpleDateFormat("dd-MMMM-yyyy");
+                saveCurrentDate = currentDate.format(calFordDate.getTime());
+
+                Calendar calFordTime = Calendar.getInstance();
+                SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm");
+                saveCurrentTime = currentTime.format(calFordTime.getTime());
+
+                chatRef.push().setValue(new ChatMessage(msg.getText().toString(), name, saveCurrentTime, saveCurrentDate));
+                msg.setText("");
+            }
+        });
     }
 
 
@@ -85,18 +138,40 @@ public class ChatActivity2 extends AppCompatActivity {
 
         if(item.getItemId() == R.id.menu_leave)
         {
-
+            ref.child(uid).child("groups").child(groupKey).removeValue();
+            Toast.makeText(this, "Group left successfully!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(ChatActivity2.this, ChatActivity.class));
+            finish();
         }
 
-        if(item.getItemId() == R.id.menu_change_bg)
+        /*if(item.getItemId() == R.id.menu_change_bg)
         {
             Intent i = new Intent();
             i.setType("image/*");
             i.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(i, "Select Picture"), RESULT_LOAD_IMAGE);
-        }
+        }*/
         return true;
     }
+
+    private void displayChat()
+    {
+        ListView listOfMsgs = (ListView)findViewById(R.id.list_of_messages);
+        FirebaseListOptions<ChatMessage> options = new FirebaseListOptions.Builder<ChatMessage>().setQuery(chatRef, ChatMessage.class).build();
+        FirebaseListAdapter<ChatMessage> firebaseListAdapter = new FirebaseListAdapter<ChatMessage>(options) {
+            @Override
+            protected void populateView(@NonNull View v, @NonNull ChatMessage model, int position) {
+                TextView msgText = (TextView) v.findViewById(R.id.message_text);
+                TextView msgUser = (TextView) v.findViewById(R.id.message_user);
+                TextView msgTime = (TextView) v.findViewById(R.id.message_time);
+
+                msgText.setText(model.getMessageText());
+                msgUser.setText(model.getMessageUser());
+            }
+        };
+        listOfMsgs.setAdapter(adapter);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

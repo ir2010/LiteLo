@@ -123,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
 
                         break;
 
-                    case R.id.notifications:
-                        break;
+                    //case R.id.notifications:
+                      //  break;
 
                 }
                 return true;
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
         //user = FirebaseAuth.getInstance().getCurrentUser();
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        ref = FirebaseDatabase.getInstance().getReference("UserData/"+uid);
+        ref = FirebaseDatabase.getInstance().getReference("UserData/"+RegisterActivity.mood+uid);
         sref_profile_image = FirebaseStorage.getInstance().getReference("profile_images/");
         sref_post_image = FirebaseStorage.getInstance().getReference("Post Images/");
         Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();

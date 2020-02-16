@@ -13,15 +13,15 @@
         android:background="?attr/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/AppTheme.PopupOverlay"
-        tools:layout_editor_absoluteX="49dp">
+        tools:layout_editor_absoluteX="-57dp">
 
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/image"
             android:layout_width="60dp"
             android:layout_height="52dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginLeft="115dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="2dp"
             android:src="@drawable/ic_person_outline_black_24dp"
             app:civ_border_color="#EEEEEE"

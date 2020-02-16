@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatActivity2"
-    >
+    tools:context=".ChatActivity2">
 
     <ImageView
         android:layout_width="match_parent"
@@ -41,21 +40,25 @@
         <TextView
             android:id="@+id/group_name"
             android:layout_width="match_parent"
-            android:layout_height="33dp"
-            android:text="TextView" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="609dp"
+            android:text=""
+            android:textSize="30dp"
+            android:textStyle="bold" />
 
-        <androidx.recyclerview.widget.RecyclerView
+        <ListView
             android:id="@+id/list_of_messages"
-            android:layout_width="396dp"
-            android:layout_height="574dp"
+            android:layout_width="wrap_content"
+            android:layout_height="468dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="0dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginEnd="14dp"
-            android:layout_marginBottom="81dp"
+            android:layout_marginEnd="13dp"
+            android:layout_marginBottom="90dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.466"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,8 +70,16 @@
             android:layout_height="31dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="17dp"
-            android:layout_marginBottom="667dp"
-            android:text="TextView" />
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="567dp"
+            android:text="started by "
+            android:textSize="25dp"
+            android:textStyle="italic" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/forceful_orange"/>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

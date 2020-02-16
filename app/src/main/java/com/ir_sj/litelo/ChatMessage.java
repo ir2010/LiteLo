@@ -6,13 +6,22 @@ public class ChatMessage
 {
     private String messageText;
     private String messageUser;
-    private long messageTime;
+    private String messageTime, messageDate;
 
-    public ChatMessage(String mt, String mu)
+    public ChatMessage(String mt, String mu, String time, String date)
     {
         messageText = mt;
         messageUser = mu;
-        messageTime = new Date().getTime();
+        messageTime = time;
+        messageDate = date;
+    }
+
+    public String getMessageDate() {
+        return messageDate;
+    }
+
+    public void setMessageDate(String messageDate) {
+        this.messageDate = messageDate;
     }
 
     public ChatMessage()
@@ -40,12 +49,12 @@ public class ChatMessage
         messageUser = mu;
     }
 
-    public long getMessageTime()
+    public String getMessageTime()
     {
         return messageTime;
     }
 
-    public void setMessageTime(long mt)
+    public void setMessageTime(String mt)
     {
         messageTime = mt;
     }

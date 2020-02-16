@@ -16,25 +16,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:layout_width="98dp"
-        android:layout_height="55dp"
+    <Button
         android:id="@+id/fab"
+        android:layout_width="170dp"
+        android:layout_height="58dp"
         android:background="@drawable/custom_button"
+        android:text="Start a new talk"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.539"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.976"
-        tools:src="@drawable/ic_add_black_24dp" />
+        app:layout_constraintVertical_bias="0.976" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="405dp"
         android:layout_height="49dp"
         android:text="Active Conversations"
-        android:textSize="40dp"
+        android:textSize="30dp"
         android:textStyle="bold"
         android:paddingLeft="8dp"
         app:layout_constraintBottom_toBottomOf="parent"

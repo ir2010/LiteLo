@@ -15,9 +15,9 @@
         android:title="Leave Chat"
         app:showAsAction="never" />
 
-    <item
+    <!--<item
         android:id="@+id/menu_change_bg"
         android:title="Change Background"
         app:showAsAction="never"/>
-
+-->
 </menu>

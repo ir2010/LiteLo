@@ -65,7 +65,7 @@ public class CommentActivity extends AppCompatActivity {
         CommentsList.setLayoutManager(linearLayoutManager);
 
         CommentInputText = (EditText) findViewById(R.id.comment_input);
-        PostCommentButton = (ImageButton) findViewById(R.id.post_comment_bin); //btn ko bin likh diya hai galti se
+        PostCommentButton = (ImageButton) findViewById(R.id.post_comment_bin);
 
         PostCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override

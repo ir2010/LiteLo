@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.ir_sj.litelo.MainActivity">
+    tools:context="com.ir_sj.chat.MainActivity">
 
     <item
         android:id="@+id/profile"
@@ -27,12 +27,19 @@
         android:enabled="true"
         android:icon="@drawable/ic_chat_black_24dp"/>
 
-    <!--<item
+   <!-- <item
         android:id="@+id/notifications"
         android:orderInCategory="100"
         android:title="Notifications"
         app:showAsAction="ifRoom"
         android:enabled="true"
         android:icon="@drawable/ic_notifications_black_24dp" />-->
+    <item
+        android:id="@+id/therapist"
+        android:orderInCategory="100"
+        android:title="Therapy"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        android:icon="@drawable/ic_add_black_24dp" />
 
 </menu>

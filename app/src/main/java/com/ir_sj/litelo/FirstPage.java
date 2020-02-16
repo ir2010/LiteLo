@@ -39,7 +39,7 @@ public class FirstPage extends AppCompatActivity {
                         if(task.isSuccessful())
                         {
                             //user = FirebaseAuth.getInstance().getCurrentUser();
-                            startActivity(new Intent(FirstPage.this, RegisterActivity.class));
+                            startActivity(new Intent(FirstPage.this, SurveyListView.class));
                             Toast.makeText(FirstPage.this, "Yayyy...Just one more step to go..!!", Toast.LENGTH_SHORT).show();
                         }
                         else

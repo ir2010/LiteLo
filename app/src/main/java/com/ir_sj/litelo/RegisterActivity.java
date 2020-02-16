@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity
     StorageReference sref;
     String downloadUri;
     LottieAnimationView anim;
-    static String mood="sad";
+    static String mood;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -78,6 +78,7 @@ public class RegisterActivity extends AppCompatActivity
         setContentView(R.layout.activity_register);
 
         //mood = getIntent().getStringExtra("mood");
+        mood = SurveyListView.i;
 
         name = (EditText)findViewById(R.id.name);
         chooseImage = (Button)findViewById(R.id.choose_image);

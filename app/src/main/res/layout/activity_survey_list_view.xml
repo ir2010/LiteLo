@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RelativeLayout
+    android:orientation="vertical" android:layout_height="match_parent" android:layout_width="match_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <TextView
+        android:id="@+id/mood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#74161313"
+        android:text="Mood Survey"
+        android:textAlignment="center"
+        android:textSize="30dp" />
+
+    <ListView
+        android:id="@+id/survey_list"
+        android:layout_width="401dp"
+        android:layout_height="587dp"
+        android:layout_above="@+id/bp"
+        android:layout_below="@+id/mood"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="6dp">
+
+    </ListView>
+
+    <Button
+        android:id="@+id/bp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="17dp"
+        android:text="Submit and Proceed" />
+
+
+</RelativeLayout>

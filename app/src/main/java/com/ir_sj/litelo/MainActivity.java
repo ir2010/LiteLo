@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.profile:
-                        //startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                        startActivity(new Intent(MainActivity.this, ProfileActivity.class));
                         break;
 
                     case R.id.jam:
@@ -123,8 +124,9 @@ public class MainActivity extends AppCompatActivity {
 
                         break;
 
-                    //case R.id.notifications:
-                      //  break;
+                    case R.id.therapist:
+                        startActivity(new Intent(MainActivity.this, Therapist.class));
+                        break;
 
                 }
                 return true;
@@ -198,6 +200,14 @@ public class MainActivity extends AppCompatActivity {
                 postsViewHolder.time.setText(posts.getTime());
                 postsViewHolder.date.setText(posts.getDate());
                 postsViewHolder.description.setText(posts.getDescription());
+
+                postsViewHolder.like.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        postsViewHolder.like.setBackgroundColor(Color.RED);
+                        postsViewHolder.like.setEnabled(false);
+                    }
+                });
 
                 postsViewHolder.comment.setOnClickListener(new View.OnClickListener() {
                     @Override

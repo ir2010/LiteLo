@@ -13,7 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".CreatePasswordActivity"></activity>
+        <activity android:name=".Therapist"></activity>
+        <activity android:name=".SurveyListView" />
+        <activity android:name=".Survey" />
+        <activity android:name=".EnterPassword" />
+        <activity android:name=".CreatePasswordActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".CommentActivity" />
         <activity android:name=".FirstPage" />

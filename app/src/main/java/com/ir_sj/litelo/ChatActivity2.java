@@ -87,6 +87,7 @@ public class ChatActivity2 extends AppCompatActivity {
         TextView userNameView = (TextView)findViewById(R.id.username);
         nameView.setText(groupName);
         userNameView.setText("started by "+userName);
+        displayChat();
 
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -97,7 +98,7 @@ public class ChatActivity2 extends AppCompatActivity {
                 ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        name=  dataSnapshot.child(uid).child("groups").child("username").getValue().toString();
+                        name=  dataSnapshot.child(RegisterActivity.mood).child(uid).child("groups").child("username").getValue().toString();
                     }
 
                     @Override
@@ -169,7 +170,8 @@ public class ChatActivity2 extends AppCompatActivity {
                 msgUser.setText(model.getMessageUser());
             }
         };
-        listOfMsgs.setAdapter(adapter);
+        listOfMsgs.setAdapter(firebaseListAdapter);
+        firebaseListAdapter.startListening();
     }
 
 
